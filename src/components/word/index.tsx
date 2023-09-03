@@ -325,7 +325,7 @@ const Word = (props: CombinedProps) => {
               } : {})}>
                 {Boolean(interimTranscript) ? interimTranscript : (
                     <span style={{color: "#67d8ef"}}>
-                        {tries > 0 ? "Try again..." : "Say the word..."}
+                        Say the word...
                     </span>
                 )}
               </div>
