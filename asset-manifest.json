@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/vocab-webapp/static/css/main.73cbfee1.css",
-    "main.js": "/vocab-webapp/static/js/main.ce33fbe1.js",
+    "main.js": "/vocab-webapp/static/js/main.cd49fce0.js",
     "static/js/845.eb7174dc.chunk.js": "/vocab-webapp/static/js/845.eb7174dc.chunk.js",
     "static/js/787.fd91ea20.chunk.js": "/vocab-webapp/static/js/787.fd91ea20.chunk.js",
     "static/media/analog-timer.mp3": "/vocab-webapp/static/media/analog-timer.b0e96e18a3ec58dc7f94.mp3",
@@ -28,12 +28,12 @@
     "static/media/play.svg": "/vocab-webapp/static/media/play.2edfd9acb755f3b0052bfe2265c1a057.svg",
     "static/media/Speaker_Icon.svg": "/vocab-webapp/static/media/Speaker_Icon.f882e7a60dc7aeb7902260f3cb18e4fc.svg",
     "main.73cbfee1.css.map": "/vocab-webapp/static/css/main.73cbfee1.css.map",
-    "main.ce33fbe1.js.map": "/vocab-webapp/static/js/main.ce33fbe1.js.map",
+    "main.cd49fce0.js.map": "/vocab-webapp/static/js/main.cd49fce0.js.map",
     "845.eb7174dc.chunk.js.map": "/vocab-webapp/static/js/845.eb7174dc.chunk.js.map",
     "787.fd91ea20.chunk.js.map": "/vocab-webapp/static/js/787.fd91ea20.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.73cbfee1.css",
-    "static/js/main.ce33fbe1.js"
+    "static/js/main.cd49fce0.js"
   ]
 }
