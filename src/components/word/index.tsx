@@ -1,10 +1,12 @@
 import stylex from "@ladifire-opensource/stylex";
 import useSound from "use-sound";
-import { useEffect, useState, useRef } from "react";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { useEffect } from "react";
 
-import countdownSound from "../../assets/analog-timer.mp3";
 import SpeakerIcon from "../../assets/images/Speaker_Icon.svg";
+import PauseIcon from "../../assets/images/pause.svg";
+import PlayIcon from "../../assets/images/play.svg";
+// import NextIcon from "../../assets/images/next.svg";
+import MicrophoneIcon from "../../assets/images/microphone.svg";
 import { WordProps } from "../../types";
 
 const styles = stylex.create({
@@ -27,6 +29,7 @@ const styles = stylex.create({
     display: "table",
     position: "relative",
     transition: "all 0.2s",
+    overflow: "hidden",
   },
   image: {
     position: "relative",
@@ -42,6 +45,7 @@ const styles = stylex.create({
     borderTopRightRadius: "1.5rem",
   },
   wordContainer: {
+    position: "relative",
     paddingTop: "0",
     paddingRight: "2.5rem",
     paddingLeft: "2.5rem",
@@ -56,16 +60,19 @@ const styles = stylex.create({
     display: "table-row",
     color: "#f92472",
     fontWeight: 700,
+    transition: "all 0.2s",
   },
   phonetic: {
     fontSize: "7.5rem",
     fontFamily: '"Lucida Sans Unicode", "Lucida Grande"',
     display: "table-row",
     color: "#a6e22c",
+    transition: "all 0.2s",
   },
   meaning: {
     fontSize: "2.5rem",
     color: "#e7db74",
+    transition: "all 0.2s",
   },
   playWrapper: {
     position: "absolute",
@@ -88,7 +95,6 @@ const styles = stylex.create({
     width: 48,
     height: 48,
     cursor: "pointer",
-    color: "red",
     filter:
       "invert(36%) sepia(11%) saturate(107%) hue-rotate(39deg) brightness(94%) contrast(89%)",
 
@@ -97,139 +103,136 @@ const styles = stylex.create({
         "invert(100%) sepia(0%) saturate(7491%) hue-rotate(21deg) brightness(114%) contrast(100%)",
     },
   },
+  controlIcons: {
+    width: 46,
+    height: 46,
+    cursor: "pointer",
+    filter:
+      "invert(36%) sepia(11%) saturate(107%) hue-rotate(39deg) brightness(94%) contrast(89%)",
+  },
   timeWrapper: {
     position: "absolute",
-    left: 16,
-    bottom: 16,
-    cursor: "pointer",
-    background: "none",
-  },
-  timerContent: {
-    width: 80,
-    height: 80,
-    display: "flex",
-    position: "relative",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  timer: {
-    color: "#f92472",
-    fontSize: "2.5rem",
-    fontWeight: 700,
-  },
-  timerTime: {
-    position: "absolute",
     left: 0,
-    top: 0,
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    transform: "translateY(0)",
-    opacity: 1,
-    transition: "all 0.2s",
+    bottom: 0,
+    height: 6,
+    cursor: "pointer",
+    background: "#d9d9d9",
+    width: "100% ",
+    color: "red",
   },
-  up: {
-    opacity: 0,
-    transform: "translateY(-100%)",
+  bar: {
+    background: "#f92472",
+    height: 6,
   },
-  down: {
-    opacity: 0,
-    transform: "translateY(100%)",
+  playPause: {
+    position: "absolute",
+    left: 16,
+    bottom: -31,
+    height: 68,
+    width: 68,
+    cursor: "pointer",
+    background: "#a3a3a1",
+    color: "red",
+    borderRadius: "50%",
+    zIndex: 100,
+    border: 'none',
+    outline: 'none'
+  },
+  next: {
+    position: "absolute",
+    left: 92,
+    bottom: -21,
+    height: 48,
+    width: 48,
+    cursor: "pointer",
+    background: "#a3a3a1",
+    color: "red",
+    borderRadius: "50%",
+    zIndex: 100,
+    border: 'none',
+    outline: 'none'
+  },
+  nextIcon: {
+    width: 24,
+    height: 24,
+  },
+  microphoneContainer: {
+    position: 'relative',
+    height: 134,
+    width: 134,
+    // background: 'red',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '50%',
+    animationDirection: "alternate",
+    animationDuration: "1s",
+    animationIterationCount: "infinite",
+    animationName: stylex.keyframes({
+        '0%': {
+            boxShadow: '0 0 0 0px rgba(255, 255, 255, 0.2)'
+        },
+        '100%': {
+            boxShadow: '0 0 0 20px rgba(255, 255, 255, 0)'
+        },
+    })
+  },
+  microphone: {
+    position: 'absolute',
+    height: 128,
+    width: 128,
+    cursor: "pointer",
+    background: "#a3a3a1",
+    borderRadius: "50%",
+    border: 'none',
+    outline: 'none'
+  },
+  microphoneIcon: {
+    width: 96,
+    height: 96,
+
+    filter:
+      "invert(36%) sepia(11%) saturate(107%) hue-rotate(39deg) brightness(94%) contrast(89%)",
   },
 });
 
-const DURATION = 10;
+interface Props {
+  isPlaying: boolean;
+  count: number;
+  onPlayingChange: (isPlaying: boolean) => void;
+  listening: boolean;
+  interimTranscript?: string;
+  finalTranscript?: string;
+  solved?: boolean;
+  tries?: number;
+}
 
-const Word = (props: WordProps) => {
-  const { word, phonetic, meaning, image, audio } = props;
+type CombinedProps = WordProps & Props;
+
+const Word = (props: CombinedProps) => {
+  const {
+    count,
+    word,
+    phonetic,
+    meaning,
+    image,
+    audio,
+    isPlaying,
+    onPlayingChange,
+    listening,
+    interimTranscript,
+    finalTranscript,
+    solved,
+    tries = 0,
+  } = props;
 
   const [play] = useSound(audio);
-  const [playCountdown, { stop }] = useSound(countdownSound);
-  const [timeUp, setTimeUp] = useState(false);
-
-  const currentTime = useRef<any>(0);
-  const prevTime = useRef(null);
-  const isNewTimeFirstTick = useRef(false);
-  const [, setOneLastRerender] = useState(0);
-
-  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    setCount(0);
-    setTimeUp(false);
-  }, [word]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
+    if (count === 3 && isPlaying) {
       play();
-    }, 3000);
-
-    playCountdown();
-
-    return () => {
-      clearTimeout(timeout);
-      stop();
-    };
-  }, [play, playCountdown, word, stop]);
-
-  useEffect(() => {
-    const timeTicker = setInterval(() => {
-      if (count === DURATION) {
-        clearInterval(timeTicker);
-      }
-      setCount(count + 1);
-    }, 1000);
-
-    return () => {
-      clearInterval(timeTicker);
-    };
-  }, [count, word]);
-
-  const renderTime = ({ remainingTime }: { remainingTime: any }) => {
-    if (currentTime.current !== remainingTime) {
-      isNewTimeFirstTick.current = true;
-      prevTime.current = currentTime.current;
-      currentTime.current = remainingTime;
-    } else {
-      isNewTimeFirstTick.current = false;
     }
-
-    // force one last re-render when the time is over to tirgger the last animation
-    if (remainingTime === 0) {
-      setTimeout(() => {
-        setOneLastRerender((val: any) => val + 1);
-      }, 20);
-    }
-
-    const isTimeUp = isNewTimeFirstTick.current;
-
-    return (
-      <div className={stylex(styles.timerContent)}>
-        <div
-          key={remainingTime}
-          // className={`time ${isTimeUp ? "up" : ""}`}
-          className={`${stylex(styles.timer)} ${
-            isTimeUp ? stylex(styles.up) : ""
-          }`}
-        >
-          {remainingTime}
-        </div>
-        {prevTime.current !== null && (
-          <div
-            key={prevTime.current}
-            // className={`time ${!isTimeUp ? "down" : ""}`}
-            className={`${stylex(styles.timerTime)} ${
-              !isTimeUp ? stylex(styles.down) : ""
-            }`}
-          >
-            {prevTime.current}
-          </div>
-        )}
-      </div>
-    );
-  };
+  }, [count, isPlaying, play]);
 
   return (
     <div className={stylex(styles.wrapper)}>
@@ -240,49 +243,129 @@ const Word = (props: WordProps) => {
             onClick={() => {
               play();
             }}
+            disabled={!isPlaying}
           >
             <img alt="Play" className={stylex(styles.icon)} src={SpeakerIcon} />
           </button>
         </div>
         <div>
           <div className={stylex(styles.image)}>
-            <img alt="" className={stylex(styles.wordImg)} src={image} />
+            <img
+              alt=""
+              className={stylex(styles.wordImg)}
+              src={image}
+            />
             <div className={stylex(styles.timeWrapper)}>
-              <CountdownCircleTimer
-                size={100}
-                strokeWidth={8}
-                isPlaying
-                duration={10}
-                colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-                colorsTime={[10, 6, 3, 0]}
-                onComplete={() => {
-                  setTimeUp(true);
-                  stop();
-
-                  return {
-                    shouldRepeat: true,
-                    delay: 3,
-                  };
-                }}
-              >
-                {renderTime}
-              </CountdownCircleTimer>
+              <div style={{ position: "relative" }}>
+                <div
+                  className={stylex(styles.bar)}
+                  style={{ width: `${(count / 13) * 100}%` }}
+                ></div>
+              </div>
             </div>
+            <button
+              className={stylex(styles.playPause)}
+              onClick={() => onPlayingChange(!isPlaying)}
+              title="Next word"
+            >
+              <img
+                alt="Play/Pause"
+                className={stylex(styles.controlIcons)}
+                src={isPlaying ? PauseIcon : PlayIcon}
+              />
+            </button>
           </div>
         </div>
-        <div className={stylex(styles.wordContainer)}>
-          {count >= 5 ? (
-            <div className={stylex(styles.word)}>{count >= 5 ? word : ""}</div>
-          ) : null}
-          {count >= 3 ? (
-            <div className={stylex(styles.phonetic)}>{phonetic}</div>
-          ) : null}
-          {timeUp ? (
-            <div className={stylex(styles.meaning)}>{meaning}</div>
-          ) : null}
+        <div
+          className={stylex(styles.wordContainer)}
+        >
+          {listening && !solved && (
+            <div
+              style={{
+                position: "relative",
+                left: 0,
+                right: 0,
+                bottom: 0,
+                top: 0,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 150,
+                color: "#67d8ef",
+                padding: 32,
+              }}
+            >
+              <div className={stylex(styles.microphoneContainer)}>
+              <button
+                    className={stylex(styles.microphone)}
+                    style={{ position: "relative", bottom: 0 }}
+                    onClick={() => onPlayingChange(!isPlaying)}
+                    title="Recording"
+                  >
+                    <img
+                      alt="Recording"
+                      className={stylex(styles.microphoneIcon)}
+                      src={MicrophoneIcon}
+                    />
+                  </button>
+              </div>
+
+              <div className={stylex.dedupe({
+                marginTop: '1rem',
+                fontSize: "2.5rem",
+                color: "red",
+                transition: "all 0.2s",
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: 300
+              }, interimTranscript?.trim() === word.trim() ? {
+                color: '#a6e22c'
+              } : {})}>
+                {Boolean(interimTranscript) ? interimTranscript : (
+                    <span style={{color: "#67d8ef"}}>
+                        {tries > 0 ? "Try again..." : "Say the word..."}
+                    </span>
+                )}
+              </div>
+            </div>
+          )}
+          {!listening && (
+            <>
+              <div
+                className={stylex(styles.word)}
+                style={
+                  count >= 3 && count < 13
+                    ? { opacity: 1, visibility: "visible" }
+                    : { opacity: 0, visibility: "hidden" }
+                }
+              >
+                {word}
+              </div>
+              <div
+                className={stylex(styles.phonetic)}
+                style={
+                  count >= 7 && count < 13
+                    ? { opacity: 1, visibility: "visible" }
+                    : { opacity: 0, visibility: "hidden" }
+                }
+              >
+                {phonetic}
+              </div>
+              <div
+                className={stylex(styles.meaning)}
+                style={
+                  count >= 7 && count < 13
+                    ? { opacity: 1, visibility: "visible" }
+                    : { opacity: 0, visibility: "hidden" }
+                }
+              >
+                {meaning}
+              </div>
+            </>
+          )}
         </div>
-        <source src={audio} />
-        <source src={countdownSound} />
       </div>
     </div>
   );
