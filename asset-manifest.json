@@ -1,14 +1,15 @@
 {
   "files": {
     "main.css": "/vocab-webapp/static/css/main.73cbfee1.css",
-    "main.js": "/vocab-webapp/static/js/main.b6b825d9.js",
-    "static/js/845.161011eb.chunk.js": "/vocab-webapp/static/js/845.161011eb.chunk.js",
+    "main.js": "/vocab-webapp/static/js/main.ce33fbe1.js",
+    "static/js/845.eb7174dc.chunk.js": "/vocab-webapp/static/js/845.eb7174dc.chunk.js",
     "static/js/787.fd91ea20.chunk.js": "/vocab-webapp/static/js/787.fd91ea20.chunk.js",
     "static/media/analog-timer.mp3": "/vocab-webapp/static/media/analog-timer.b0e96e18a3ec58dc7f94.mp3",
     "static/media/listen.jpeg": "/vocab-webapp/static/media/listen.1494682795d602a2cfb8.jpeg",
     "static/media/learn.jpeg": "/vocab-webapp/static/media/learn.a937dc1d9b45234453a7.jpeg",
     "static/media/head.jpeg": "/vocab-webapp/static/media/head.5b03a23beecd03d91dc1.jpeg",
     "static/media/say.avif": "/vocab-webapp/static/media/say.568ad5a25bde235fec08.avif",
+    "static/media/correct.mp3": "/vocab-webapp/static/media/correct.1dd2eda18e900449e771.mp3",
     "static/media/idea.jpeg": "/vocab-webapp/static/media/idea.c912789fb84df3ba7dd8.jpeg",
     "static/media/look.jpeg": "/vocab-webapp/static/media/look.32f0a72b3aa11cd80a61.jpeg",
     "static/media/knee.jpeg": "/vocab-webapp/static/media/knee.b92b6e4e8613c47ac4e3.jpeg",
@@ -21,15 +22,18 @@
     "static/media/listen__gb_1.mp3": "/vocab-webapp/static/media/listen__gb_1.cd5a76768c079a6d5e54.mp3",
     "static/media/look__gb_1.mp3": "/vocab-webapp/static/media/look__gb_1.d41d21d740924dc4fdee.mp3",
     "static/media/girl.avif": "/vocab-webapp/static/media/girl.a5de2b7f279715348dab.avif",
+    "static/media/microphone.svg": "/vocab-webapp/static/media/microphone.776d09416adfec441f5c3595ead6a944.svg",
     "index.html": "/vocab-webapp/index.html",
+    "static/media/pause.svg": "/vocab-webapp/static/media/pause.10144db7b7c19da170f4d09911e3251b.svg",
+    "static/media/play.svg": "/vocab-webapp/static/media/play.2edfd9acb755f3b0052bfe2265c1a057.svg",
     "static/media/Speaker_Icon.svg": "/vocab-webapp/static/media/Speaker_Icon.f882e7a60dc7aeb7902260f3cb18e4fc.svg",
     "main.73cbfee1.css.map": "/vocab-webapp/static/css/main.73cbfee1.css.map",
-    "main.b6b825d9.js.map": "/vocab-webapp/static/js/main.b6b825d9.js.map",
-    "845.161011eb.chunk.js.map": "/vocab-webapp/static/js/845.161011eb.chunk.js.map",
+    "main.ce33fbe1.js.map": "/vocab-webapp/static/js/main.ce33fbe1.js.map",
+    "845.eb7174dc.chunk.js.map": "/vocab-webapp/static/js/845.eb7174dc.chunk.js.map",
     "787.fd91ea20.chunk.js.map": "/vocab-webapp/static/js/787.fd91ea20.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.73cbfee1.css",
-    "static/js/main.b6b825d9.js"
+    "static/js/main.ce33fbe1.js"
   ]
 }
